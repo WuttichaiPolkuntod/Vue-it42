@@ -36,7 +36,7 @@ export default {
       firstname : "Wuttichay" ,
       lastname: "Polkunthod" ,
       age: 19 ,
-      address: "<i>Chonburi?</i>",
+      address: "<i>Chonburi</i>",
     };
   },
   methods: {
