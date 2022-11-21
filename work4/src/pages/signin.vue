@@ -1,24 +1,24 @@
 <template>
   <div class="container">
   <form action="">
-    <div class="">
+    <div class="Signin">
     Sign-in
     </div>
     <div class="input">
       <label for="username">Username</label>
-      <input type="text" id="username" v-model="username">{{username}}
+      <input type="text" id="username" v-model="username" :disabled="busy">{{username}}
     </div>
     <div class="input">
       <label for="password">Password</label>
-      <input type="password" id="password" v-model="password">{{password}}
+      <input type="password" id="password" v-model="password" :disabled="busy">{{password}}
     </div>
     <div class="input">
       <input type="checkbox" id="remember" v-model="remember">
       <label for="remember">Remember for username</label>
     </div>
     <div class="input">
-      <button type="button" :disabled="lock">Sign-in</button>
-      <button type="reset" class="">Reset</button>
+      <button type="button" :disabled="lock || busy" @click="doSignin">Sign-in{{lock}}</button>
+      <button type="reset" class="" :disabled="lock || busy">Reset</button>
     </div>
   </form>
 </div>
@@ -30,6 +30,7 @@
       username:"",
       password:"",
       remember:true,
+      busy:false
       //lock:true
     }
   },
@@ -47,6 +48,14 @@
       return this.username === '' || this.password ===''
     }
   },
+  methods:{
+    doSignin(){
+      this.busy = true
+      setTimeout(()=>{
+        this.busy = false
+      },3000)
+    }
+  }
 
  }
 </script>
@@ -61,5 +70,13 @@
   .input{
     padding: 5px;
     margin: 5px;
+  }
+  .Signin{
+    color: blue;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    background-color: lightskyblue;
   }
 </style>
