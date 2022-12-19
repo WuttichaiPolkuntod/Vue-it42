@@ -66,6 +66,7 @@
             sum+=item.price;
           }
         });
+        return sum;
       }
     },
  }
