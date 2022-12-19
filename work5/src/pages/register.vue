@@ -1,69 +1,96 @@
 <template>
   <div class="container mt-5 w-50">
-  <div class="card text-center mg-50">
-  <form action="">
-    <div class="card-header bg-primary text-light">
-      Sign-in
-    </div>
+   <div class="card">
+      <div class="card-header bg-primary text-white text-center">แบบฟอร์มการลงทะเบียนสมาชิก </div>
     <div class="card-body">
-      <div class="input-group mb-3">
-      
-        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" id="username" v-model="username" :disabled="busy">{{username}}
-      </div>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" v-text="max-massage.length"></span>
-        </div>
-        <input type="text" class="form-control" v-model="massage" :maxlength="max">
-      </div>
-      <div class="input">
-        <label for="password">Password</label>
-        <input type="password" id="password" v-model="password" :disabled="busy">{{password}}
-      </div>
-      <div class="input-group">
-
-        <textarea class="form-control" aria-label="With textarea"></textarea>
-      </div>
-      <div class="input">
-        <input type="checkbox" id="remember" v-model="remember">
-        <label for="remember">Remember for username</label>
-      </div>
-      <div class="input">
-        <button type="button" :disabled="lock || busy" @click="doSignin">Sign-in{{lock}}</button>
-        <button type="reset" class="" :disabled="lock || busy">Reset</button>
-      </div>
+    <form action="">
+    <div class="mb-3">
+      <label class="col-form-lable">ชื่อ - นามสกุล</label>
+      <input type="text" class="form-control" id="name" v-model="name">
     </div>
-  </form>
-</div>
-</div>
+    <div class="mb-3">
+      <label class="col-form-lable">รหัสประจำตัวประชาชน</label>
+      <div class="input-group">
+      <div class="input-group-prepend">
+       <span class="input-group-text" v-text="max-idcard.length"></span>
+      </div>
+      <input type="text" class="form-control" v-model="idcard" :maxlength="max">
+    </div>
+  </div>
+  <div class="mb-3">
+      <label class="col-form-lable">วันเดือนปีเกิด</label>
+      <input type="text" class="form-control" id="birthday" v-model="birthday">
+    </div>
+    <div class="mb-3">
+      <label class="col-form-lable">ที่อยู่</label>
+     <textarea class="form-control" id="address" cols="30" rows="3" v-model="address"></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="col-form-lable">Email</label>
+      <input type="text" class="form-control" id="email" v-model="email">
+    </div>
+    <div class="mb-3">
+      <label class="col-form-lable">รูปภาพประจำตัว</label>
+      <div class="input-group mb-3">
+      <input type="file" class="form-control" @change="onfileChange">
+      <div >
+       <img :src="image" class="img-fluid">
+      </div>
+      <button class="btn btn-danger" @click="removeImage" v-if="image">remove</button>
+      </div>      
+    </div>
+    <button type="submit" class="btn btn-primary" :disabled="busy||lock" @click="signIn">Register</button>
+    </form>
+    </div>
+  </div>
+  </div>
+  <div v-if="busy" class="position-fixed top-0 start-0 bottom-0 end-0 bg-primary">
+  <h1>Please wait...</h1>
+  </div>
 </template>
-
 <script>
- export default {
-  data(){
-    return{
-      username:"",
-      password:"",
-      remember:true,
-      busy:false,
-      //lock:true
-      massage:"",
-      max:13
+  export default {
+      data(){
+          return {
+              name:"",
+              idcard:"",
+              birthday:"",
+              address:"",
+              email:"",
+              image:"",
+              busy:false,
+              max:13
+          }
+      },
+      computed: {
+          lock(){
+              return this.name === '' || this.idcard === '' || this.birthday === '' || this.address === '' || this.email === ''
+
+          }
+      },
+      methods:{
+          onfileChange:function(e){
+          var files=e.target.files
+          if(!files.length)
+          return
+          this.createImage(files[0]);
+      },
+      createImage(files){
+          var reader=new FileReader();
+          reader.onload=(e)=>{
+              this.image=e.target.result;
+          }
+          reader.readAsDataURL(files)
+      },
+          signIn(){
+              this.busy=true
+              setTimeout(() => {
+                  this.busy = false
+              },3000)
+          },
+          removeImage(){
+          this.image="";
     }
-  },
-}
+      }
+  }
 </script>
-<style scoped>
-  .input{
-    padding: 5px;
-    margin: 5px;
-  }
-  .Signin{
-    color: blue;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    padding: 10px;
-    background-color: lightskyblue;
-  }
-</style>
