@@ -48,7 +48,7 @@ const fetchData = () =>{
 fetchData()
 
 const onEdit = (id) =>{
-  alert(id + "edit")
+  router.push('/update/'+id)
 }
 
 const onDelete = (id) =>{
