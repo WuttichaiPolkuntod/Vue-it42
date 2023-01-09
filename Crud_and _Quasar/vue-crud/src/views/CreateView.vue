@@ -17,6 +17,7 @@
 
 <script setup>
   import { ref } from 'vue';
+  import router from '../router';
 
   const fname = ref('')
   const lname = ref('')
@@ -26,6 +27,33 @@
   const Avatar = ref('')
 
   const onSubmit = () =>{
-    alert('submit')
+    var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+var raw = JSON.stringify({
+  "fname": fname.value,
+  "lname": lname.value,
+  "username": Username.value,
+  "password": Password.value,
+  "email": Email.value,
+  "avatar": Avatar.value
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("https://www.melivecode.com/api/users/create", requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    alert(result.message)
+    if (result.status === 'ok') {
+      router.push('/')
+    }
+  })
+  .catch(error => console.log('error', error));
   }
 </script>
